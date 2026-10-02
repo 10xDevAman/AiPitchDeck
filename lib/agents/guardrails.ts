@@ -1,5 +1,6 @@
 import { Agent, run, type InputGuardrail, type OutputGuardrail } from "@openai/agents";
 import { z } from "zod";
+import { PitchDeckSchema } from "@/lib/schemas/pitch-deck";
 
 // ---------------------------------------------------------------------------
 // INPUT GUARDRAIL — runs BEFORE the agent, blocks bad user input early
@@ -59,14 +60,14 @@ Return isValid: false if ANY of these are true:
 
 Otherwise return isValid: true.
 If invalid, explain why in the reason field.`,
-  outputType: QualityCheckSchema as any,
+  outputType: QualityCheckSchema,
 });
 
 /**
  * Sends the generated deck to the checker agent before we save it.
  * If quality fails, the whole run is blocked.
  */
-export const pitchDeckQualityGuardrail: OutputGuardrail = {
+export const pitchDeckQualityGuardrail: OutputGuardrail<typeof PitchDeckSchema> = {
   name: "pitch_deck_quality",
   execute: async ({ agentOutput }) => {
     const deckJson = JSON.stringify(agentOutput, null, 2);

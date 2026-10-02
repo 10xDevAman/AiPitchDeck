@@ -36,7 +36,7 @@ export const pitchDeckAgent = new Agent({
   model: "gpt-4.1-mini",
   instructions: PITCH_DECK_INSTRUCTIONS,
   // Zod v4 types differ slightly from the SDK — runtime structured output works fine.
-  outputType: PitchDeckSchema as any,
+  outputType: PitchDeckSchema,
   inputGuardrails: [validProjectIdeaGuardrail],
   outputGuardrails: [pitchDeckQualityGuardrail],
 });
